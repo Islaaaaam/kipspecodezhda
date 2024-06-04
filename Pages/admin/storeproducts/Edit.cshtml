@@ -1,0 +1,42 @@
+﻿@page
+@model SleekClothing.Pages.admin.storeproducts.EditModel
+
+@{
+    ViewData["Title"] = "Изменить количество товара в магазине";
+}
+
+<h2>Изменить количество товара в магазине</h2>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<form method="post">
+    <input type="hidden" asp-for="StoreProduct.Id" />
+    <input type="hidden" asp-for="StoreProduct.StoreId" />
+    <input type="hidden" asp-for="StoreProduct.ProductId" />
+
+    <div class="form-group">
+        <label>Магазин</label>
+        <select asp-for="StoreProduct.StoreId" asp-items="@(ViewData["Stores"] as IEnumerable<SelectListItem>)" class="form-control" disabled></select>
+    </div>
+    <div class="form-group">
+        <label>Товар</label>
+        <select asp-for="StoreProduct.ProductId" asp-items="@(ViewData["Products"] as IEnumerable<SelectListItem>)" class="form-control" disabled></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="StoreProduct.Quantity" class="control-label">Количество</label>
+        <input asp-for="StoreProduct.Quantity" class="form-control" />
+        <span asp-validation-for="StoreProduct.Quantity" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

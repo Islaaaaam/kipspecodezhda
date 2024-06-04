@@ -1,0 +1,45 @@
+﻿@page
+@model SleekClothing.Pages.admin.orders.IndexModel
+
+@{
+    ViewData["Title"] = "Orders";
+}
+<br />
+<h1>Управление заказами</h1>
+<h3 class="text-muted fw-normal">Удаляйте или просматривайте информацию о созданных клиентами заказах.</h3>
+<br />
+
+<h3>Заказы</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Orders[0].Id)
+            </th>
+          
+            <th>
+                Дата заказа
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Orders)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOrdered)
+                </td>
+            
+                <td>
+                    <div class="d-flex flex-column p-3 rounded-3 gap-1">
+                        <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info">Детали</a>
+                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">Удалить</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

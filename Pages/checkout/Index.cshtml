@@ -1,0 +1,273 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using SleekClothing.Helpers
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model SleekClothing.Pages.checkout.IndexModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="container-fluid mx-auto my-4">
+    <h1>Оформление заказа</h1>
+</div>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form method="post" class="container">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-start gap-3 align-items-center mb-3">
+                    <span class="text-muted">Ваша корзина</span>
+                    <a href="/cart" class="btn btn-outline-primary">Изменить &nbsp;<span class="fa fa-edit"></span></a>
+                </h4>
+                <ul class="list-group mb-3">
+                    @foreach (var product in Model.Products)
+                    {
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div>
+                                <img src="@product.ImageLocation" height="50" width="50" />
+                            </div>
+                            <div class="text-start w-100 px-2">
+                                <h6 class="my-0">@product.Name</h6>
+                                <small class="text-muted">Количество: @product.CartQuantity</small>
+                            </div>
+                            <div class="text-end" style="width: 120px">
+                                @if (product.HasDiscount)
+                                {
+                                    <strong class="text-success">@product.Discount% СКИДКА</strong>
+                                    <br />
+                                }
+                                <span class="text-muted">@product.PriceAfterDiscount.ToString("C2")</span>
+                            </div>
+                        </li>
+                    }
+
+                    <li class="bg-light list-group-item rounded-bottom">
+                        <div class="d-flex justify-content-between">
+                            <span>Сумма заказа</span>
+                            <span class="fw-light text-muted">@Model.CartTotal.ToString("C2")</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Итого (включая 13% НДС)</span>
+                            <span class="text-info fw-bold text-decoration-underline">@Model.CartTotalAfterGst.ToString("C2")</span>
+                        </div>
+                    </li>
+
+                    @if (Model.IsEligibleForDiscount)
+                    {
+                        <li class="list-group-item bg-success text-white">
+                            <strong>Вам начисляется скидка в размере 5% за более 10 оформленных заказов!</strong>
+                        </li>
+                    }
+
+
+                    <li style="list-style-type: none;">
+                        <button class="btn btn-primary btn-lg mt-3 float-end" asp-page-handler="Checkout" type="submit">Оплатить @Model.CartTotalAfterGst.ToString("c2")</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-8 order-md-1">
+                <h4 class="mb-3">Персональная информация</h4>
+                <div>
+                    <input hidden asp-for="Order.ProductDataAsJson" value="json-data">
+                    <input hidden asp-for="Order.TotalCost" value="@Model.CartTotalAfterGst">
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Order.FirstName">Имя</label>
+                            <input asp-for="Order.FirstName" type="text" class="form-control">
+                            <span asp-validation-for="Order.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Order.LastName">Фамилия</label>
+                            <input asp-for="Order.LastName" type="text" class="form-control">
+                            <span asp-validation-for="Order.LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Order.Email">Email</label>
+                        <input asp-for="Order.Email" type="text" class="form-control" value="@Model.User.Identity.Name" placeholder="someone@example.com">
+                        <span asp-validation-for="Order.Email" class="text-danger"></span>
+                    </div>
+
+                    <br />
+                    <h4 class="mb-3">Детали доставки</h4>
+
+                    <div class="form-group">
+                        <label>Способ доставки</label>
+                        <select asp-for="Order.IsPickup" class="form-control" id="deliveryMethod">
+                            <option value="false">Доставка</option>
+                            <option value="true">Самовывоз</option>
+                        </select>
+                    </div>
+
+                    <div id="storeSelection" style="display: none;">
+                        <div class="form-group">
+                            <label>Магазин</label>
+                            <select asp-for="Order.PickupStoreId" asp-items="Model.Stores" class="form-control">
+                                <option value="">Выберите магазин</option>
+                            </select>
+                            <span asp-validation-for="Order.PickupStoreId" class="text-danger"></span>
+                        </div>
+                        <div id="storeInfo"></div>
+                    </div>
+
+                    <div id="addressFields">
+                        <div class="mb-3">
+                            <label asp-for="Order.Address">Адрес</label>
+                            <input asp-for="Order.Address" type="text" class="form-control">
+                            <span asp-validation-for="Order.Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Order.Address2">Адрес 2 <span class="text-muted">(Необязательно)</span></label>
+                            <input asp-for="Order.Address2" type="text" class="form-control">
+                            <span asp-validation-for="Order.Address2" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <label asp-for="Order.Country">Страна</label>
+                                <select asp-for="Order.Country" class="form-select d-block">
+                                    <option value="Canada" selected>Canada</option>
+                                </select>
+                                <span asp-validation-for="Order.Country" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Order.Province">Провинция</label>
+                                <select asp-for="Order.Province" class="form-select d-block w-100">
+                                    <option value="Alberta" selected>Alberta</option>
+                                    <option value="Saskatchewan">Saskatchewan</option>
+                                    <option value="British Columbia">British Columbia</option>
+                                </select>
+                                <span asp-validation-for="Order.Province" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label asp-for="Order.PostalCode">Почтовый индекс</label>
+                                <input asp-for="Order.PostalCode" type="text" class="form-control">
+                                <span asp-validation-for="Order.PostalCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <h4 class="mb-3">Оплата</h4>
+
+                    <div class="d-block my-3">
+                        <div class="custom-control custom-radio">
+                            <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked>
+                            <label class="custom-control-label" for="credit">Кредитная карта</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input id="debit" name="paymentMethod" type="radio" class="custom-control-input">
+                            <label class="custom-control-label" for="debit">Дебетовая карта</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input">
+                            <label class="custom-control-label" for="paypal">PayPal</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cc-name">Имя на карте</label>
+                            <input type="text" class="form-control" id="cc-name" placeholder="">
+                            <div class="invalid-feedback">
+                                Карта на имя
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cc-number">Номер карты</label>
+                            <input type="text" class="form-control" id="cc-number" placeholder="">
+                            <div class="invalid-feedback">
+                                Номер карты
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="cc-expiration">Срок действия карты</label>
+                            <input type="text" class="form-control" id="cc-expiration" placeholder="">
+                            <div class="invalid-feedback">
+                                Срок действия карты
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="cc-cvv">CVV</label>
+                            <input type="text" class="form-control" id="cc-cvv" placeholder="">
+                            <div class="invalid-feedback">
+                                Код безопасности CVV
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+    </form>
+    <script>
+        $(function () {
+            function handleDeliveryMethodChange() {
+                var isPickup = $('#deliveryMethod').val() === 'true';
+                $('#storeSelection').toggle(isPickup);
+                $('#addressFields input, #addressFields select').prop('readonly', isPickup).prop('disabled', isPickup);
+
+                if (isPickup) {
+                    $('#Order_Address').val('Самовывоз');
+                    $('#Order_Address2').val('Самовывоз');
+                    $('#Order_Country').val('Самовывоз');
+                    $('#Order_Province').val('Самовывоз');
+                    $('#Order_PostalCode').val('000000');
+                } else {
+                    $('#Order_Address').val('');
+                    $('#Order_Address2').val('');
+                    $('#Order_Country').val('Canada');
+                    $('#Order_Province').val('Alberta');
+                    $('#Order_PostalCode').val('');
+                    $('select[name="Order.PickupStoreId"]').val('');
+                    $('#storeInfo').empty();
+                }
+            }
+
+            $('#deliveryMethod').change(handleDeliveryMethodChange);
+
+            $('select[name="Order.PickupStoreId"]').change(function () {
+                var storeId = $(this).val();
+                if (storeId) {
+                    $.get('/checkout?handler=StoreInfo', { storeId: storeId }, function (data) {
+                        $('#storeInfo').html(data);
+                    });
+                } else {
+                    $('#storeInfo').empty();
+                }
+            });
+
+            handleDeliveryMethodChange();
+        });
+    </script>
+}
+else if (SignInManager.IsSignedIn(User) && Model.Products.Count == 0)
+{
+    <div class="d-flex flex-column align-items-center justify-content-center align my-5">
+        <h1 class="fw-bold">¯\_(ツ)_/¯</h1>
+        <h1>Вы еще не выбрали ни одного товара</h1>
+        <a href="/products">Нажмите сюда, чтобы найти интересующие вас товары</a>
+    </div>
+}
+else
+{
+    <div style="padding: 100px 0;">
+        <span><a href="/Identity/Account/Register">Зарегестрируйтесь</a> или <a href="/Identity/Account/Login">войдите</a>, чтобы начать совершать покупки.</span>
+    </div>
+}

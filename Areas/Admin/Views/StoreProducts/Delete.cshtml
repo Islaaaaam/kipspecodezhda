@@ -1,0 +1,12 @@
+﻿@using SleekClothing.Models
+@model StoreProduct
+
+<h2>Удалить товар из магазина</h2>
+
+<p>Вы уверены, что хотите удалить товар <strong>@Model.Product.Name</strong> из магазина?</p>
+
+<form asp-action="DeleteConfirmed">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Удалить</button> |
+    <a asp-action="Index" asp-route-storeId="@Model.StoreId">Отмена</a>
+</form>

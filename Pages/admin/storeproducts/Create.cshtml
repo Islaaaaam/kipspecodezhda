@@ -1,0 +1,37 @@
+﻿@page
+@model SleekClothing.Pages.admin.storeproducts.CreateModel
+@{
+    ViewData["Title"] = "Добавить товар в магазин";
+}
+
+<h2>Добавить товар в магазин</h2>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<form method="post">
+    <div class="form-group">
+        <label>Магазин</label>
+        <select asp-for="StoreProduct.StoreId" asp-items="@(ViewData["Stores"] as IEnumerable<SelectListItem>)" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label>Товар</label>
+        <select asp-for="StoreProduct.ProductId" asp-items="@(ViewData["Products"] as IEnumerable<SelectListItem>)" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="StoreProduct.Quantity" class="control-label">Количество</label>
+        <input asp-for="StoreProduct.Quantity" class="form-control" />
+        <span asp-validation-for="StoreProduct.Quantity" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

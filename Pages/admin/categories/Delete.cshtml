@@ -1,0 +1,18 @@
+﻿@page
+@model SleekClothing.Pages.admin.categories.DeleteModel
+
+@{
+    ViewData["Title"] = "Удалить";
+}
+
+<h1>Удалить</h1>
+
+<h3>Вы уверены, что хотите удалить категорию: @Html.DisplayFor(model => model.Category.Name)?</h3>
+<div>
+    <hr />
+    <form method="post">
+        <input type="hidden" asp-for="Category.Id" />
+        <a asp-page="./Index" class="btn btn-primary">Вернуться к списку</a>
+        <input type="submit" value="Удалить" class="btn btn-danger" />
+    </form>
+</div>

@@ -1,0 +1,37 @@
+﻿@page
+@model SleekClothing.Pages.products.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+<br />
+<h1>@Html.DisplayFor(model => model.Product.Name)</h1>
+<img src="@Html.DisplayFor(model => model.Product.ImageLocation)" height="300" />
+<div>
+    <hr />
+    <h4>Описание</h4>
+    @Html.DisplayFor(model => model.Product.Desc)
+    <br />
+    <br />
+    <h5>Категория: <span class="fw-normal">@Html.DisplayFor(model => model.Product.Category.Name)</span></h5>
+    <br />
+
+    <!-- Добавлено: информация о наличии товара в магазинах -->
+    <h5>Наличие в магазинах:</h5>
+    @if (Model.StoreProducts.Any())
+    {
+        <ul>
+            @foreach (var storeProduct in Model.StoreProducts)
+            {
+                <li>@storeProduct.Store.Name: @storeProduct.Quantity шт.</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Товар отсутствует в магазинах.</p>
+    }
+
+    <div>
+        <a class="btn btn-primary" asp-page="./Index">Вернуться к товарам</a>
+    </div>
+</div>

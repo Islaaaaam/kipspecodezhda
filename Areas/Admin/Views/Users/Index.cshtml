@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<IdentityUser>
+
+<h2>Список пользователей</h2>
+
+<p>
+    <a asp-action="Create">Создать нового пользователя</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Имя пользователя</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@user.Id">Редактировать</a> |
+                    <a asp-action="Delete" asp-route-id="@user.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,29 @@
+﻿@using SleekClothing.Models
+@model List<StoreProduct>
+
+<h2>Товары в магазине @ViewBag.Store.Name</h2>
+
+<a asp-action="Create" asp-route-storeId="@ViewBag.Store.Id">Добавить товар</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Товар</th>
+            <th>Количество</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var storeProduct in Model)
+        {
+            <tr>
+                <td>@storeProduct.Product.Name</td>
+                <td>@storeProduct.Quantity</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@storeProduct.Id">Изменить</a> |
+                    <a asp-action="Delete" asp-route-id="@storeProduct.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

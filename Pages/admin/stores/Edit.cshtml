@@ -1,0 +1,39 @@
+﻿@page
+@model SleekClothing.Pages.admin.stores.EditModel
+
+@{
+    ViewData["Title"] = "Изменить магазин";
+}
+
+<h2>Изменить магазин</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Store.Id" />
+    <div class="form-group">
+        <label asp-for="Store.Name">Название магазина</label>
+        <input asp-for="Store.Name" class="form-control" />
+        <span asp-validation-for="Store.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Store.Address">Адрес магазина</label>
+        <input asp-for="Store.Address" class="form-control" />
+        <span asp-validation-for="Store.Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Store.Latitude">Широта</label>
+        <input asp-for="Store.Latitude" class="form-control" />
+        <span asp-validation-for="Store.Latitude" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Store.Longitude">Долгота</label>
+        <input asp-for="Store.Longitude" class="form-control" />
+        <span asp-validation-for="Store.Longitude" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

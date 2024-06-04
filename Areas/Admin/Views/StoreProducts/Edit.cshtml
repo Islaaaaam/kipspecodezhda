@@ -1,0 +1,20 @@
+﻿@using SleekClothing.Models
+@model StoreProduct
+
+<h2>Изменить количество товара в магазине</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="StoreId" />
+    <input type="hidden" asp-for="ProductId" />
+
+    <div class="form-group">
+        <label>Товар</label>
+        <select asp-for="ProductId" asp-items="ViewBag.Products" class="form-control" disabled></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Quantity"></label>
+        <input asp-for="Quantity" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

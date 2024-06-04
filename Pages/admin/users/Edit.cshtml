@@ -1,0 +1,27 @@
+﻿@page
+@model SleekClothing.Pages.admin.users.EditModel
+@using Microsoft.AspNetCore.Identity
+
+@{
+    ViewData["Title"] = "Редактирование пользователя";
+}
+
+<h2>Редактирование пользователя</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="User.Id" />
+
+    <div class="form-group">
+        <label asp-for="User.Email">Электронная почта</label>
+        <input asp-for="User.Email" class="form-control" />
+        <span asp-validation-for="User.Email" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a asp-page="Index" class="btn btn-secondary">Отмена</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

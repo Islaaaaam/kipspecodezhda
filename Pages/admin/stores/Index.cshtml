@@ -1,0 +1,40 @@
+﻿@page
+@model SleekClothing.Pages.admin.stores.IndexModel
+@{
+    ViewData["Title"] = "Магазины";
+}
+<br />
+<h1>Управление магазинами</h1>
+<h3 class="text-muted fw-normal">Создавайте, изменяйте и удаляйте уже имеющиеся магазины.</h3>
+<br />
+
+<h3>Магазины</h3>
+<p>
+    <a asp-page="Create" class="btn btn-primary">Создать новый магазин</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Адрес</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var store in Model.Stores)
+        {
+            <tr>
+                <td>@store.Name</td>
+                <td>@store.Address</td>
+                <td>
+                    <div class="d-flex flex-column p-3 rounded-3 gap-1">
+                        <a asp-page="Edit" asp-route-id="@store.Id" class="btn btn-info">Изменить</a>
+                        <a asp-page="Delete" asp-route-id="@store.Id" class="btn btn-danger">Удалить</a>
+                        <a asp-page="../storeproducts/Index" asp-route-storeId="@store.Id" class="btn btn-secondary">Товары</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

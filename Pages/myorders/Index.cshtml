@@ -1,0 +1,76 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity;
+@using SleekClothing.Helpers;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model shopping_cart_russ.Pages.myorders.IndexModel
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h1 class="py-3">Мои заказы</h1>
+
+@* if there are items in the user's cart, show cart details *@
+@if (SignInManager.IsSignedIn(User) && Model.Orders.Count > 0)
+{
+    @foreach (var order in Model.Orders)
+    {
+        <div class="card p-4 my-4 bg-light">
+
+            <h2 class="text-primary fw-bold">@order.DateOrdered.ToLongDateString() <span class="fw-light">@order.DateOrdered.ToLocalTime().ToLongTimeString()</span></h2>
+            <strong>Order ID: @order.Id</strong>
+            <br/>
+            <h4>Персональная информация</h4>
+            <ul>
+                <li>First name: @order.FirstName</li>
+                <li>Last name: @order.LastName</li>
+                <li>Email: @order.Email</li>
+            </ul>
+            <br/>
+
+            <h4>Детали доставки</h4>
+            <ul>
+                <li>Address @order.Address</li>
+                <li>Address 2: @order.Address2</li>
+                <li>Country: @order.Country</li>
+                <li>Province: @order.Province</li>
+                <li>Postal code: @order.PostalCode</li>
+            </ul>
+            <br/>
+
+            <h4>Выбранные товары</h4>
+            <ul>
+                @foreach (var product in order.OrderedProducts)
+                {
+                    <li>@product.Name &nbsp;<strong>x @product.CartQuantity</strong></li>
+                }
+            </ul>
+            
+            <br/>
+
+            <h2>Итого: <span class="text-info fw-bold">@order.TotalCost.ToString("c2")</span></h2>
+
+        </div>
+       
+    }
+    
+}
+else if (SignInManager.IsSignedIn(User) && Model.Orders.Count == 0)
+{
+    <div style="padding: 100px 0px;">
+        <span>У вас нет совершенных заказов.</span>
+    </div>    
+}
+else
+{
+    <div style="padding: 100px 0px;">
+        <span><a href="/Identity/Account/Register">Зарегистрируйтесь</a> or <a href="/Identity/Account/Login">Войдите</a>, чтобы увидеть ваши заказы.</span>
+    </div>    
+}
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>

@@ -1,0 +1,49 @@
+﻿@page
+@model SleekClothing.Pages.admin.categories.IndexModel
+
+@{
+    ViewData["Title"] = "Categories";
+}
+<br />
+<h1>Управление категориями</h1>
+<h3 class="text-muted fw-normal">Создавайте, изменяйте и удаляйте уже имеющиеся категории.</h3>
+<br />
+
+<h3>Категории</h3>
+<p>
+    <a asp-page="Create" class="">Добавить новую категорию</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Название
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Categories)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <div class="d-flex flex-column p-3 rounded-3 gap-1">
+                        <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-secondary">Детали</a>
+                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-info">Изменить</a>
+                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">Удалить</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

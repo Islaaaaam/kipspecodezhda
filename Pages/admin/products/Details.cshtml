@@ -1,0 +1,67 @@
+﻿@page
+@model SleekClothing.Pages.admin.products.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Детали</h1>
+
+<div>
+    <h4>Товар</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Название
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Описание
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Desc)
+        </dd>
+        <dt class="col-sm-2">
+            Артикул
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.SKU)
+        </dd>
+        <dt class="col-sm-2">
+            Количество
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Quantity)
+        </dd>
+        <dt class="col-sm-2">
+            Цена
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Price)
+        </dd>
+        <dt class="col-sm-2">
+            Скидка
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Discount)
+        </dd>
+        <dt class="col-sm-2">
+            Дата создания
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.DateCreated)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Product?.Id">Изменить</a> |
+    <a asp-page="./Index">Вернуться к списку</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

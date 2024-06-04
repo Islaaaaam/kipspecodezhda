@@ -1,0 +1,25 @@
+﻿@model SleekClothing.Models.Product
+
+<h2>Удаление продукта</h2>
+
+<div>
+    <h4>Вы уверены, что хотите удалить этот продукт?</h4>
+    <dl class="row">
+        <dt class="col-sm-2">Название</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+        <dt class="col-sm-2">Категория</dt>
+        <dd class="col-sm-10">@Model.Category.Name</dd>
+        <dt class="col-sm-2">Цена</dt>
+        <dd class="col-sm-10">@Model.Price.ToString("C")</dd>
+        <dt class="col-sm-2">Скидка</dt>
+        <dd class="col-sm-10">@Model.Discount%</dd>
+        <dt class="col-sm-2">Количество</dt>
+        <dd class="col-sm-10">@Model.Quantity</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>

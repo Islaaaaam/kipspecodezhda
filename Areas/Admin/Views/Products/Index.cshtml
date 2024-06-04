@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SleekClothing.Models.Product>
+
+<h2>Список продуктов</h2>
+
+<p>
+    <a asp-action="Create">Создать новый продукт</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Категория</th>
+            <th>Цена</th>
+            <th>Скидка</th>
+            <th>Количество</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Category.Name</td>
+                <td>@product.Price.ToString("C")</td>
+                <td>@product.Discount%</td>
+                <td>@product.Quantity</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@product.Id">Редактировать</a> |
+                    <a asp-action="Delete" asp-route-id="@product.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

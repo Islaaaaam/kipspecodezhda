@@ -1,0 +1,69 @@
+﻿@page
+@model SleekClothing.Pages.admin.products.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Удалить</h1>
+
+<h3>Вы уверены, что хотите удалить товар @Html.DisplayFor(model => model.Product.Name)?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Изображение
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Html.DisplayFor(model => model.Product.ImageLocation)" height="100" />
+        </dd>
+        <dt class="col-sm-2">
+            Название
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Описание
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Desc)
+        </dd>
+        <dt class="col-sm-2">
+            Артикул
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.SKU)
+        </dd>
+        <dt class="col-sm-2">
+            Количество
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Quantity)
+        </dd>
+        <dt class="col-sm-2">
+            Цена
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Price)
+        </dd>
+        <dt class="col-sm-2">
+            Скидка
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Discount)
+        </dd>
+        <dt class="col-sm-2">
+            Дата создания
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.DateCreated)
+        </dd>
+    </dl>
+
+    <form method="post">
+        <input type="hidden" asp-for="Product.Id" />
+        <a asp-page="./Index" class="btn btn-primary">Вернуться к списку</a>
+        <input type="submit" value="Удалить" class="btn btn-danger" />
+    </form>
+</div>

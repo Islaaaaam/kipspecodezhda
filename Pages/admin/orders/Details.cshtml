@@ -1,0 +1,105 @@
+﻿@page
+@model SleekClothing.Pages.admin.orders.DetailsModel
+
+@{
+    ViewData["Title"] = "Детали заказа";
+}
+
+<h1>Детали заказа</h1>
+
+<div>
+    <h4>Заказ</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Идентификатор заказа
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Id)
+        </dd>
+
+        <dt class="col-sm-2">
+            Имя
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.FirstName)
+        </dd>
+
+        <dt class="col-sm-2">
+            Фамилия
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.LastName)
+        </dd>
+
+        <dt class="col-sm-2">
+            Электронная почта
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Email)
+        </dd>
+
+        <dt class="col-sm-2">
+            Адрес
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Address)
+        </dd>
+
+        <dt class="col-sm-2">
+            Дополнительный адрес
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Address2)
+        </dd>
+
+        <dt class="col-sm-2">
+            Страна
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Country)
+        </dd>
+
+        <dt class="col-sm-2">
+            Область
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.Province)
+        </dd>
+
+        <dt class="col-sm-2">
+            Почтовый индекс
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.PostalCode)
+        </dd>
+
+        <dt class="col-sm-2">
+            Дата заказа
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.DateOrdered)
+        </dd>
+
+        <dt class="col-sm-2">
+            Общая стоимость
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.TotalCost)
+        </dd>
+
+        <dt class="col-sm-2">
+            Заказанные товары
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var product in Model.Order.OrderedProducts)
+            {
+                <p>@product.Name - @product.Price x @product.CartQuantity</p>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Order?.Id">Изменить</a> |
+    <a asp-page="./Index">Вернуться к списку</a>
+</div>

@@ -1,0 +1,16 @@
+﻿@page
+@model SleekClothing.Pages.admin.storeproducts.DeleteModel
+
+@{
+    ViewData["Title"] = "Удалить товар из магазина";
+}
+
+<h2>Удалить товар из магазина</h2>
+
+<p>Вы уверены, что хотите удалить товар <strong>@Model.StoreProduct.Product.Name</strong> из магазина?</p>
+
+<form method="post">
+    <input type="hidden" asp-for="StoreProduct.Id" />
+    <button type="submit" class="btn btn-danger">Удалить</button>
+    <a asp-page="./Index" asp-route-storeId="@Model.StoreProduct.StoreId" class="btn btn-secondary">Отмена</a>
+</form>
